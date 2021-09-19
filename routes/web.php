@@ -37,6 +37,7 @@ Auth::routes(['verify' => true]);
 Route::middleware(['auth', 'verified'])->prefix('/app')->group(function() {
     /* Rotas para todos os usuários cadastrados no sistema */
     Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::get('meus-projetos', [App\Http\Controllers\ProjetoController::class, 'meusProjetos'])->name('meus.projetos');
 
     /* Rotas para usuários cadastrados no sistema como ADMIN */
     Route::resource('projeto', 'ProjetoController')->middleware('is.admin');

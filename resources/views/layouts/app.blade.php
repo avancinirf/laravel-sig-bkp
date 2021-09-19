@@ -74,7 +74,13 @@
                                         </a>
                                     @else
                                         <a class="dropdown-item" href="#">
-                                            {{ __('Meus Recursos') }}
+                                            {{ __('Meus projetos') }}
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            {{ __('Meus Cursos') }}
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            {{ __('Minha Conta') }}
                                         </a>
                                     @endif
                                     <a class="dropdown-item" href="{{ route('logout') }}"

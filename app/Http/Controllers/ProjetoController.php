@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Projeto;
 use Illuminate\Http\Request;
+use App\Http\Middleware\IsAdminMiddleware;
 
 
 class ProjetoController extends Controller
 {
     public function __construct() {
-
+        //$this->middleware(IsAdminMiddleware::class);
     }
 
     /**
@@ -20,7 +21,11 @@ class ProjetoController extends Controller
     public function index()
     {
         //throw new \Exception('Erro ao adicionar projeto!');
-        $projetos = Projeto::paginate(10);
+        if (!auth()->user()->admin) {
+            $projetos = Projeto::where('user_id', '=', auth()->user()->id)->paginate(10);
+        } else {
+            $projetos = Projeto::paginate(10);
+        }
         return view('app.projeto.index', ['projetos' => $projetos]);
     }
 
@@ -89,6 +94,11 @@ class ProjetoController extends Controller
      */
     public function destroy(Projeto $projeto)
     {
-        //
+        $projeto->delete();
+        return redirect()->route('projeto.index');
+    }
+
+    public function meusProjetos() {
+        dd('teste P ok!!!');
     }
 }

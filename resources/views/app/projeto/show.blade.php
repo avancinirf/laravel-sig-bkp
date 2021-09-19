@@ -30,7 +30,6 @@
                                 <input type="date" class="form-control" value="{{ $projeto->finalizado_em }}" >
                             </div>
                         </fieldset>
-                        <a href="{{ url()->previous() }}" class="btn btn-sm px-3 btn-primary">Voltar para edição</a>
                         <a href="{{ route('projeto.index') }}" class="btn btn-sm px-3 btn-primary">Lista de projetos</a>
                     </div>
                 </div>

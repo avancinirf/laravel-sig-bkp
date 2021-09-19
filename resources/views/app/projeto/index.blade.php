@@ -5,7 +5,7 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header"><img class="consig-icon mr-3" src="http://consigsa.test/img/consig_icon.png" />Gestão de projetos</div>
+                    <div class="card-header"><img class="consig-icon mr-3" src="http://consigsa.test/img/consig_icon.png" />Gestão de projetos<a class="btn btn-sm btn-primary float-right" href="{{ route('projeto.create') }}"><i class="bi-plus-square-fill"></i></a></div>
 
                     <div class="card-body">
                         <table class="table">
@@ -17,6 +17,7 @@
                                     <th scope="col">Iniciado em</th>
                                     <th scope="col">Finalizado em</th>
                                     <th scope="col">Público</th>
+                                    <th scope="col">Usuário</th>
                                     <th scope="col">Ações</th>
                                 </tr>
                             </thead>
@@ -33,10 +34,16 @@
                                         @else
                                             <td>não</td>
                                         @endif
+                                        <td>{{ $projeto->user_id }}</td>
                                         <td>
-                                            <a class="btn btn-sm btn-primary" href="{{ route('projeto.show', $projeto->id) }}"><i class="bi-eye-fill"></i></a>
-                                            <a class="btn btn-sm btn-primary" href="{{ route('projeto.edit', $projeto->id) }}"><i class="bi-pencil-fill"></i></a>
-                                            <a class="btn btn-sm btn-danger"><i class="bi-trash-fill"></i></a>
+
+                                            <form id="form_{{ $projeto->id }}" method="post" action="{{ route('projeto.destroy', ['projeto' => $projeto->id]) }}">
+                                                @method('DELETE')
+                                                @csrf
+                                                <a class="btn btn-sm btn-primary" href="{{ route('projeto.show', $projeto->id) }}"><i class="bi-eye-fill"></i></a>
+                                                <a class="btn btn-sm btn-primary" href="{{ route('projeto.edit', $projeto->id) }}"><i class="bi-pencil-fill"></i></a>
+                                                <a class="btn btn-sm btn-danger" onclick="document.getElementById('form_{{$projeto->id}}').submit()"><i class="bi-trash-fill"></i></a>
+                                            </form>
                                         </td>
                                     </tr>
                                 @endforeach

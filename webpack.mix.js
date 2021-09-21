@@ -11,6 +11,8 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js')
+mix.styles(['resources/css/consig-app.css'], 'public/css/consig-app.css')
+    .scripts('resources/js/consig-app-projetos.js', 'public/js/consig-app-projetos.js')
+    .js('resources/js/app.js', 'public/js')
     .sass('resources/sass/app.scss', 'public/css')
     .sourceMaps();

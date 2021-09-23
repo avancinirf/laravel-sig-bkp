@@ -42,7 +42,8 @@ class ProjetoController extends Controller
      */
     public function create()
     {
-        //return View('app.projeto.create');
+        $usuariosComuns = User::select('id', 'name')->where('admin', '=', false)->orderBy('name')->get();
+        return view('app.projeto.create', ['usuarios' => $usuariosComuns]);
     }
 
     /**
@@ -54,10 +55,10 @@ class ProjetoController extends Controller
     public function store(Request $request)
     {
         $request->validate($this->projeto->rules(), $this->projeto->feedback());
-        $projeto = $this->projeto->create($request->all());
-        $resultado = ['success' => true, 'data' => $projeto];
 
-        return response()->json($projeto, 201);
+        $projeto = $this->projeto->create($request->all());
+
+        return redirect()->route('projeto.show', ['projeto' => $projeto->id]);
     }
 
     /**
@@ -71,9 +72,9 @@ class ProjetoController extends Controller
         $projeto = $this->projeto->find($id);
 
         if ($projeto === null) {
-            return response()->json(['erro' => 'Projeto não encontrado.'], 404);
+            return view('app.projeto.show');
         }
-        return response()->json($projeto, 200);
+        return view('app.projeto.show', ['projeto' => $projeto]);
     }
 
     /**
@@ -82,9 +83,23 @@ class ProjetoController extends Controller
      * @param  \App\Models\Projeto  $projeto
      * @return \Illuminate\Http\Response
      */
-    public function edit(Projeto $projeto)
+    /*public function edit(Projeto $projeto)
     {
-        //return view('app.projeto.edit', ['projeto' => $projeto]);
+        return view('app.projeto.edit', ['projeto' => $projeto]);
+    }*/
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  Integer  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        $projeto = $this->projeto->find($id);
+        if (!$projeto) {
+            return view('app.projeto.edit');
+        }
+        return view('app.projeto.edit', ['projeto' => $projeto]);
     }
 
     /**
@@ -99,14 +114,13 @@ class ProjetoController extends Controller
         $projeto = $this->projeto->find($id);
 
         if ($projeto === null) {
-            return response()->json(['erro' => 'Não foi possível realizar a atualização. Projeto não existe.'], 404);
+            return view('app.projeto.edit');
         }
 
         $request->validate($this->projeto->rules(), $this->projeto->feedback());
         $projeto->update($request->all());
 
-        return response()->json($projeto, 200);
-        //return redirect()->route('projeto.show', ['projeto' => $projeto->id]);
+        return redirect()->route('projeto.show', ['projeto' => $projeto->id]);
     }
 
     /**
@@ -119,11 +133,11 @@ class ProjetoController extends Controller
     {
         $projeto = $this->projeto->find($id);
         if ($projeto === null) {
-            return response()->json(['erro' => 'Impossível remover projeto. Projeto informado não existe.'], 404);
+            return redirect()->route('projeto.index');
         }
-        $projeto->delete();
 
-        return response()->json(['message' => 'Projeto removido com sucesso']);
+        $projeto->delete();
+        return redirect()->route('projeto.index');
     }
 
     public function listaSimplesDeUsuarios() {

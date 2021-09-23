@@ -10,14 +10,12 @@ class Projeto extends Model
     use HasFactory;
     protected $fillable = ['user_id', 'nome', 'descricao', 'iniciado_em', 'finalizado_em', 'publico'];
 
-    public function user() {
-        return $this->belongsTo('App\Models\User');
-    }
-
     public function rules() {
         $id = $this->id ?? 'NULL';
+
         return [
-            'nome' => 'required|unique:projetos,nome,'.$id.'|min:10|max:100',
+            'user_id' => 'required|exists:users,id',
+            'nome' => "required|unique:projetos,nome,{$id}|min:6|max:100",
             'descricao' => 'max:1000',
             'iniciado_em' => 'date|nullable',
             'finalizado_em' => 'date|nullable',
@@ -27,6 +25,7 @@ class Projeto extends Model
 
     public function feedback() {
         return [
+            'user_id.required' => 'O campo usuário é obrigatório',
             'required' => 'O campo :attribute é obrigatório.',
             'nome.unique' => 'Nome do projeto já existe',
             'nome.min' => 'Nome deve conter no mínimo 10 caracteres.',
@@ -34,6 +33,14 @@ class Projeto extends Model
             'date' => 'Formato de data inválido.',
             'descricao.max' => 'Descrição deve conter no máximo 1000 caracteres.'
         ];
+    }
+
+    public function user() {
+        return $this->belongsTo('App\Models\User');
+    }
+
+    public function arquivos() {
+        return $this->hasMany('App\Models\Arquivo');
     }
 
 }

@@ -10,6 +10,7 @@ var gestaoProjetos = (function() {
         cleanFormProject();
         $opcoesEdicao.hide();
         $opcoesAdicionar.show();
+        $opcoesRemover.hide();
         $modalProjeto.modal('show');
     };
 
@@ -17,6 +18,7 @@ var gestaoProjetos = (function() {
         cleanFormProject();
         $opcoesEdicao.show();
         $opcoesAdicionar.hide();
+        $opcoesRemover.hide();
         $modalProjeto.modal('show');
         preecncherProjeto(projeto);
     };
@@ -24,9 +26,9 @@ var gestaoProjetos = (function() {
     function showModalRemoverProjeto(projeto) {
         cleanFormProject();
         $opcoesEdicao.show();
+        $('.modal-footer').find('button.opcoes-adicionar').hide();
+        $('.modal-footer').find('button.opcoes-edicao').hide();
         $opcoesRemover.show();
-        debugger
-        $formAdicionarProjeto.find('.btn').hide();
         $modalProjeto.modal('show');
         preecncherProjeto(projeto);
     };
